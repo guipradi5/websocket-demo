@@ -24,5 +24,7 @@ wss.on("connection", (ws) => {
     ws.send("👋 Conectado al servidor WebSocket!");
 });
 
-const PORT = 5001;
-server.listen(PORT, () => console.log(`✅ Servidor en http://localhost:${PORT}`));
+const PORT = process.env.PORT || 5001;
+server.listen(PORT, "0.0.0.0", () => {
+    console.log(`✅ Servidor escuchando en puerto ${PORT}`);
+});

@@ -6,7 +6,7 @@ function App() {
   const [input, setInput] = useState("");
 
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:5001");
+    const socket = new WebSocket("wss://websocket-demo.on.shiper.app:5001");
     setWs(socket);
 
     socket.onmessage = (event) => {
