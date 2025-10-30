@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [ws, setWs] = useState(null);
+  const [username, setUsername] = useState("Anónimo-" + Math.random().toString(36).substring(2, 5));
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
@@ -9,7 +10,7 @@ function App() {
     const wsProtocol = location.protocol === "https:" ? "wss" : "ws";
     const wsHost =
       location.hostname === "localhost"
-        ? "localhost:5001"
+        ? "localhost:5000"
         : location.host;
 
     const socket = new WebSocket(`${wsProtocol}://${wsHost}`);
@@ -27,7 +28,8 @@ function App() {
 
   const sendMessage = () => {
     if (ws && input.trim() !== "") {
-      ws.send(input);
+      const fullMessage = `${username}: ${input}`;
+      ws.send(fullMessage);
       setInput("");
     }
   };
@@ -48,10 +50,18 @@ function App() {
           <div key={i}>{m}</div>
         ))}
       </div>
+      <div>
+        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Nombre de usuario" />
+      </div>
       <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Escribe un mensaje..."
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
+        }}
       />
       <button onClick={sendMessage}>Enviar</button>
     </div>
