@@ -1,4 +1,6 @@
 // server.js
+console.log("🟢 INICIO EFECTIVO server.js (antes de cualquier import)");
+
 import express from "express";
 import { WebSocketServer } from "ws";
 import http from "http";
