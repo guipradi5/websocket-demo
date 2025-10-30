@@ -5,9 +5,13 @@ import http from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 
+console.log("🚀 Servidor iniciando...");
+
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
+
+console.log("✅ Express y WebSocket Server inicializados.");
 
 wss.on("connection", (ws) => {
     console.log("🔌 Nueva conexión");
@@ -31,12 +35,18 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const distDir = path.join(__dirname, "dist");
 
+console.log(`📂 Sirviendo archivos estáticos desde: ${distDir}`);
+
 app.use(express.static(distDir));
 app.get(/.*/, (_req, res) => {
   res.sendFile(path.join(distDir, "index.html"));
 });
 
-const PORT = process.env.PORT || 5001;
+console.log("✅ Rutas de archivos estáticos configuradas.");
+
+const PORT = process.env.PORT || 5000;
+console.log(`👂 Intentando escuchar en el puerto ${PORT} en 0.0.0.0...`);
+
 server.listen(PORT, "0.0.0.0", () => {
     console.log(`✅ Servidor escuchando en puerto ${PORT}`);
 });
