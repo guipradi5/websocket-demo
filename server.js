@@ -2,6 +2,8 @@
 import express from "express";
 import { WebSocketServer } from "ws";
 import http from "http";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const app = express();
 const server = http.createServer(app);
@@ -22,6 +24,16 @@ wss.on("connection", (ws) => {
     });
 
     ws.send("👋 Conectado al servidor WebSocket!");
+});
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const distDir = path.join(__dirname, "dist");
+
+app.use(express.static(distDir));
+app.get("*", (_req, res) => {
+  res.sendFile(path.join(distDir, "index.html"));
 });
 
 const PORT = process.env.PORT || 5001;
